@@ -18,22 +18,22 @@ public class DisplayRun extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
 
-        String message = intent.getStringExtra(FirstPage.EXTRA_MESSAGE);
+        //String message = intent.getStringExtra(FirstPage.EXTRA_MESSAGE);
 
         TextView textView = new TextView(this);
 
         textView.setTextSize(40);
-        textView.setText(message);
+       // textView.setText(message);
 
         setContentView(R.layout.activity_display_run);
 
         //each of these modify the TextView on the display_run form
-        setVariables(message, R.id.Date);
+        /*setVariables(message, R.id.Date);
         setVariables(message, R.id.Weather);
         setVariables(message, R.id.Time);
         setVariables(message, R.id.Distance);
         setVariables(message, R.id.Calories);
-        setVariables(message, R.id.Pace);
+        setVariables(message, R.id.Pace);*/
     }
 
 

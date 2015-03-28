@@ -10,12 +10,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.content.Intent;
+import org.json.*;
+
 
 
 public class FirstPage extends ActionBarActivity {
 
     public EditText userIdField;
+    public JSONObject activityData;
     public final static  String EXTRA_MESSAGE = "com.example.caroline.smashrunmobile.MESSAGE";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,6 @@ public class FirstPage extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 doSomething();
-
             }
         });
 
@@ -45,7 +48,6 @@ public class FirstPage extends ActionBarActivity {
 
         Log.d("SmashRunMobile", "User Id: " + userid);
 
-        Log.        d("SmashRunMobile", "we got so far");
         Intent intent = new Intent(this, DisplayRun.class);
 
 
@@ -80,16 +82,13 @@ public class FirstPage extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void goHome(View view) {
-        Log.d("SmashRunMobile", "we got so far");
-        Intent intent = new Intent(this, DisplayRun.class);
-
-
-        EditText userid = (EditText) findViewById(R.id.userid);
-        String message = userid.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-
-        startActivity(intent);
+    public void setJSON(JSONObject j) {
+        this.activityData = j;
+        TextView t = (TextView)findViewById(R.id.outTextView);
+        try {
+            t.setText("Distance: " + activityData.getString("distance"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
