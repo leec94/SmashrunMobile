@@ -22,6 +22,8 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -34,6 +36,7 @@ import java.util.List;
 
 public class FirstPage extends ActionBarActivity {
 
+    public JSONObject activityData;
     public EditText userIdField;
 
     @Override
@@ -73,61 +76,31 @@ public class FirstPage extends ActionBarActivity {
         DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
 
         //example json request
-        //ADD BACK IN String url = "https://api.smashrun.com/v1/my/activities/2088942";
         String url = "https://api.smashrun.com/v1/my/activities/2088942?";
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
         nameValuePair.add(new BasicNameValuePair("client_id", "caroline_l097faff0"));
         nameValuePair.add(new BasicNameValuePair("access_token", "AL2LRz0jUgHhih9mjrLSYhbk5LTxVOxSFbA0PeFx5sAA"));
-        //nameValuePair.add(new BasicNameValuePair("redirect_uri", "http://yoursite.com/callback#access_token=the_access_token&token_type=bearer&expires_in=large_number_of_seconds"));
-        //httpget.setParams(nameValuePair);
 
         String query = URLEncodedUtils.format(nameValuePair, "utf-8");
         url += query;
 
         Log.d("uri: ", url);
 
-        //HttpPost httpget = new HttpPost(url);
-        // Depends on your web service
-        //httpget.setHeader("Content-type", "application/json");
-
-        //InputStream inputStream = null;
-        //String result = null;
-
-        new downloadJSON().execute(url);
-        /*
-        try {
-            HttpResponse response = httpclient.execute(httpget);
-            // write response to log but thats ugly
-            //Log.d("Http Post Response:", response.toString());
-            TextView t = (TextView) findViewById(R.id.outTextView);
-            HttpEntity entity = response.getEntity();
-
-            inputStream = entity.getContent();
-            t.setText(inputStream.toString());
-            // json is UTF-8 by default
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-            StringBuilder sb = new StringBuilder();
-
-            String line = null;
-            while ((line = reader.readLine()) != null)
-            {
-                sb.append(line + "\n");
-            }
-            result = sb.toString();
-
-            t.setText(result);
-            Log.d(result, " \"fuck you \" - tom ");
-
-        } catch (Exception e) {
-            Log.d(e.getMessage(), "");
-        }
-        finally {
-            try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
-        }
-        */
-
+        new downloadJSON(this).execute(url);
+        //use activityData JSONObject
     }
 
+    public void setJSON(JSONObject j) {
+        this.activityData = j;
+
+        TextView t = (TextView)findViewById(R.id.outTextView);
+        try {
+            t.setText("Distance: " + activityData.getString("distance"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
