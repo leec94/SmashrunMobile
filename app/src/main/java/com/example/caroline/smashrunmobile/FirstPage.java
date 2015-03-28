@@ -11,10 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIUtils;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
@@ -23,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,44 +64,48 @@ public class FirstPage extends ActionBarActivity {
         Log.d("SmashRunMobile", "User Id: " + userid);
         TextView t = (TextView)findViewById(R.id.outTextView);
 
-        configureJSON();
         t.setText("test :] ");
+
+        configureJSON();
     }
 
     public void configureJSON() {
         DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
 
         //example json request
-        HttpPost httppost = new HttpPost("https://api.smashrun.com/v1/my/activities/2088942");
+        //HttpPost httppost = new HttpPost("https://api.smashrun.com/v1/my/activities/2088942");
+        String url = "https://api.smashrun.com/v1/my/activities/2088942?";
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
         nameValuePair.add(new BasicNameValuePair("client_id", "caroline_l097faff0"));
         nameValuePair.add(new BasicNameValuePair("access_token", "AWYToBBf9ZnTQ2GK5vVwWjBI0xmwxHWOaQ0mBrnsqByY"));
         nameValuePair.add(new BasicNameValuePair("redirect_uri", "http://yoursite.com/callback#access_token=the_access_token&token_type=bearer&expires_in=large_number_of_seconds"));
+        //httpget.setParams(nameValuePair);
 
+        String query = URLEncodedUtils.format(nameValuePair, "utf-8");
+        url += query;
+
+        Log.d("uri: ", url);
+
+        HttpPost httpget = new HttpPost(url);
 // Depends on your web service
-        httppost.setHeader("Content-type", "application/json");
+        //httpget.setHeader("Content-type", "application/json");
 
         InputStream inputStream = null;
         String result = null;
 
-        //Encoding POST data
-        try {
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePair));
-
-        } catch (UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-        }
+        httpget.setHeader("Accept", "application/json");
 
         try {
-            HttpResponse response = httpclient.execute(httppost);
+            //I HATE YOU
+            HttpResponse response = httpclient.execute(httpget);
             // write response to log but thats ugly
-            Log.d("Http Post Response:", response.toString());
-            /*
+            //Log.d("Http Post Response:", response.toString());
+            TextView t = (TextView) findViewById(R.id.outTextView);
             HttpEntity entity = response.getEntity();
 
             inputStream = entity.getContent();
+            t.setText(inputStream.toString());
             // json is UTF-8 by default
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
             StringBuilder sb = new StringBuilder();
@@ -107,9 +116,12 @@ public class FirstPage extends ActionBarActivity {
                 sb.append(line + "\n");
             }
             result = sb.toString();
-            */
+
+            t.setText(result);
+            Log.d(result, " \"fuck you \" - tom ");
+
         } catch (Exception e) {
-            // Oops
+            Log.d(e.getMessage(), "");
         }
         finally {
             try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
