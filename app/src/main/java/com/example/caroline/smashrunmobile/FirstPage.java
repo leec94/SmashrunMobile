@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.content.Intent;
 
 
 public class FirstPage extends ActionBarActivity {
 
     public EditText userIdField;
+    public final static  String EXTRA_MESSAGE = "com.example.caroline.smashrunmobile.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +32,19 @@ public class FirstPage extends ActionBarActivity {
 
             @Override
             public void onClick(View v) {
-                doSomething();
+//                doSomething();
+                goHome(new View());
             }
         });
 
 
     }
 
-    public void doSomething(){
-        String userid = userIdField.getText().toString();
-
-        Log.d("SmashRunMobile", "User Id: " + userid);
-
-
-    }
+//    public void doSomething(){
+//        String userid = userIdField.getText().toString();
+//
+//        Log.d("SmashRunMobile", "User Id: " + userid);
+//    }
 
 
     @Override
@@ -68,5 +69,17 @@ public class FirstPage extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void goHome(View view) {
+        Log.d("SmashRunMobile", "we got so far");
+        Intent intent = new Intent(this, DisplayRun.class);
+
+
+        EditText userid = (EditText) findViewById(R.id.userid);
+        String message = userid.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, message);
+
+        startActivity(intent);
     }
 }
