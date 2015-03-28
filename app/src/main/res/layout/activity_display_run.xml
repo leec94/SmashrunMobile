@@ -1,0 +1,84 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.caroline.smashrunmobile.DisplayRun"
+    android:background="#004A6E"
+    >
+
+    <TextView
+        android:id="@+id/Date"
+        android:layout_alignParentTop="true"
+        android:text="Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".3"
+        android:textSize="30dp"
+        />
+
+
+    <TextView
+        android:id="@+id/Weather"
+        android:text = "Weather"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight=".3"
+        android:textSize="30dp"
+        />
+
+    <TextView
+        android:id="@+id/Time"
+        android:layout_below="@+id/Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        android:layout_weight=".3"
+        android:textSize="30dp"
+        />
+
+    <TextView
+        android:id="@+id/Distance"
+        android:layout_below="@+id/Weather"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distance"
+        android:gravity="right"
+        android:layout_weight=".3"
+        android:textSize="30dp"
+        />
+
+    <TextView
+        android:id="@+id/Calories"
+        android:layout_below="@+id/Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calories"
+        android:gravity="left"
+        android:layout_weight=".3"
+        android:textSize="30dp"
+        />
+
+    <TextView
+        android:id="@+id/Pace"
+        android:layout_below="@+id/Distance"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pace"
+        android:gravity="right"
+        android:layout_weight=".3"
+        android:textSize="30dp"
+        />
+
+
+
+</RelativeLayout>

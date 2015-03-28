@@ -4,5 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="button_text">Ok</string>
+    <string name="title_activity_display_run">DisplayRun</string>
 
 </resources>
