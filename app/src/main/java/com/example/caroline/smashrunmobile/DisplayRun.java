@@ -7,10 +7,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DisplayRun extends ActionBarActivity {
+    public JSONObject activityData;
 
 
     @Override
@@ -34,7 +45,9 @@ public class DisplayRun extends ActionBarActivity {
         setVariables(message, R.id.Distance);
         setVariables(message, R.id.Calories);
         setVariables(message, R.id.Pace);*/
+        configureJSON();
     }
+
 
 
     @Override
@@ -63,6 +76,27 @@ public class DisplayRun extends ActionBarActivity {
 
         TextView tempView = (TextView) findViewById(x);
         tempView.setText(message);
+    }
+    public void configureJSON() {
+        DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
+        //example json request
+        //ADD BACK IN String url = "https://api.smashrun.com/v1/my/activities/2088942";
+        String url = "https://api.smashrun.com/v1/my/activities/2088942?";
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
+        nameValuePair.add(new BasicNameValuePair("client_id", "caroline_l097faff0"));
+        nameValuePair.add(new BasicNameValuePair("access_token", "AL2LRz0jUgHhih9mjrLSYhbk5LTxVOxSFbA0PeFx5sAA"));
+        String query = URLEncodedUtils.format(nameValuePair, "utf-8");
+        url += query;
+        new downloadJSON(this).execute(url);
+    }
+    public void setJSON(JSONObject j) {
+        this.activityData = j;
+        TextView t = (TextView)findViewById(R.id.Distance);
+        try {
+            t.setText("Distance: " + activityData.getString("distance"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

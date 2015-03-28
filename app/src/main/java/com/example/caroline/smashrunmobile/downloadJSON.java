@@ -20,9 +20,9 @@ import java.net.URL;
  */
  class downloadJSON extends AsyncTask<String,String,String> {
     JSONObject json;
-    FirstPage obj;
+    DisplayRun obj;
 
-    public downloadJSON(FirstPage obj) {
+    public downloadJSON(DisplayRun obj) {
         this.obj = obj;
     }
     @Override

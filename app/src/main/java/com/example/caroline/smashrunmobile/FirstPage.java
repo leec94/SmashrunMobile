@@ -17,7 +17,6 @@ import org.json.*;
 public class FirstPage extends ActionBarActivity {
 
     public EditText userIdField;
-    public JSONObject activityData;
     public final static  String EXTRA_MESSAGE = "com.example.caroline.smashrunmobile.MESSAGE";
 
 
@@ -82,13 +81,5 @@ public class FirstPage extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void setJSON(JSONObject j) {
-        this.activityData = j;
-        TextView t = (TextView)findViewById(R.id.outTextView);
-        try {
-            t.setText("Distance: " + activityData.getString("distance"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+
 }
