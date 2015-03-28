@@ -2,20 +2,45 @@ package com.example.caroline.smashrunmobile;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
 public class FirstPage extends ActionBarActivity {
+
+    public EditText userIdField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
 
-        TextView t = (TextView) findViewById(R.id.textView01);
-        t.setText("This is zombo.com");
+        userIdField = (EditText) findViewById(R.id.userid);
+
+        EditText passwordField = (EditText) findViewById(R.id.password);
+        String password = passwordField.getText().toString();
+
+        Button confirmButton = (Button) findViewById(R.id.button);
+        confirmButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                doSomething();
+            }
+        });
+
+
+    }
+
+    public void doSomething(){
+        String userid = userIdField.getText().toString();
+
+        Log.d("SmashRunMobile", "User Id: " + userid);
     }
 
 
@@ -25,6 +50,8 @@ public class FirstPage extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_first_page, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
