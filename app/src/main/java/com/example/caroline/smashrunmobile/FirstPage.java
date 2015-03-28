@@ -73,13 +73,12 @@ public class FirstPage extends ActionBarActivity {
         DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
 
         //example json request
-        //HttpPost httppost = new HttpPost("https://api.smashrun.com/v1/my/activities/2088942");
+        //ADD BACK IN String url = "https://api.smashrun.com/v1/my/activities/2088942";
         String url = "https://api.smashrun.com/v1/my/activities/2088942?";
-
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
         nameValuePair.add(new BasicNameValuePair("client_id", "caroline_l097faff0"));
-        nameValuePair.add(new BasicNameValuePair("access_token", "AWYToBBf9ZnTQ2GK5vVwWjBI0xmwxHWOaQ0mBrnsqByY"));
-        nameValuePair.add(new BasicNameValuePair("redirect_uri", "http://yoursite.com/callback#access_token=the_access_token&token_type=bearer&expires_in=large_number_of_seconds"));
+        nameValuePair.add(new BasicNameValuePair("access_token", "AL2LRz0jUgHhih9mjrLSYhbk5LTxVOxSFbA0PeFx5sAA"));
+        //nameValuePair.add(new BasicNameValuePair("redirect_uri", "http://yoursite.com/callback#access_token=the_access_token&token_type=bearer&expires_in=large_number_of_seconds"));
         //httpget.setParams(nameValuePair);
 
         String query = URLEncodedUtils.format(nameValuePair, "utf-8");
@@ -87,17 +86,16 @@ public class FirstPage extends ActionBarActivity {
 
         Log.d("uri: ", url);
 
-        HttpPost httpget = new HttpPost(url);
-// Depends on your web service
+        //HttpPost httpget = new HttpPost(url);
+        // Depends on your web service
         //httpget.setHeader("Content-type", "application/json");
 
-        InputStream inputStream = null;
-        String result = null;
+        //InputStream inputStream = null;
+        //String result = null;
 
-        httpget.setHeader("Accept", "application/json");
-
+        new downloadJSON().execute(url);
+        /*
         try {
-            //I HATE YOU
             HttpResponse response = httpclient.execute(httpget);
             // write response to log but thats ugly
             //Log.d("Http Post Response:", response.toString());
@@ -126,6 +124,8 @@ public class FirstPage extends ActionBarActivity {
         finally {
             try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
         }
+        */
+
     }
 
 

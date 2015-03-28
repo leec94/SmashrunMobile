@@ -7,6 +7,7 @@ import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -25,7 +26,7 @@ import java.net.URL;
 
         HttpResponse response = null;
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost method = new HttpPost(url[0]);
+        HttpGet method = new HttpGet(url[0]);
         try {
             //method.setHeader("Accept", "application/json");
             response = httpclient.execute(method);
