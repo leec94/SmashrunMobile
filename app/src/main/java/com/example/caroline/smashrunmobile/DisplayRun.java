@@ -27,9 +27,13 @@ public class DisplayRun extends ActionBarActivity {
 
         setContentView(R.layout.activity_display_run);
 
-        TextView textWhen = (TextView) findViewById(R.id.When);
-
-        textWhen.setText(message);
+        //each of these modify the TextView on the display_run form
+        setVariables(message, R.id.Date);
+        setVariables(message, R.id.Weather);
+        setVariables(message, R.id.Time);
+        setVariables(message, R.id.Distance);
+        setVariables(message, R.id.Calories);
+        setVariables(message, R.id.Pace);
     }
 
 
@@ -54,4 +58,11 @@ public class DisplayRun extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void setVariables(String message, int x){
+
+        TextView tempView = (TextView) findViewById(x);
+        tempView.setText(message);
+    }
+
 }
