@@ -7,8 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 
 public class DisplayRun extends ActionBarActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +25,11 @@ public class DisplayRun extends ActionBarActivity {
         textView.setTextSize(40);
         textView.setText(message);
 
-        setContentView(textView);
+        setContentView(R.layout.activity_display_run);
 
+        TextView textWhen = (TextView) findViewById(R.id.When);
 
+        textWhen.setText(message);
     }
 
 

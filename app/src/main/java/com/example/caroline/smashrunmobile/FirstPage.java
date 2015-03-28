@@ -32,19 +32,29 @@ public class FirstPage extends ActionBarActivity {
 
             @Override
             public void onClick(View v) {
-//                doSomething();
-                goHome(new View());
+                doSomething();
+
             }
         });
 
 
     }
 
-//    public void doSomething(){
-//        String userid = userIdField.getText().toString();
-//
-//        Log.d("SmashRunMobile", "User Id: " + userid);
-//    }
+    public void doSomething(){
+        String userid = userIdField.getText().toString();
+
+        Log.d("SmashRunMobile", "User Id: " + userid);
+
+        Log.        d("SmashRunMobile", "we got so far");
+        Intent intent = new Intent(this, DisplayRun.class);
+
+
+        EditText username = (EditText) findViewById(R.id.userid);
+        String message = username.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, message);
+
+        startActivity(intent);
+    }
 
 
     @Override
