@@ -29,23 +29,12 @@ public class DisplayRun extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
 
-        //String message = intent.getStringExtra(FirstPage.EXTRA_MESSAGE);
-
         TextView textView = new TextView(this);
 
         textView.setTextSize(40);
-       // textView.setText(message);
 
         setContentView(R.layout.activity_display_run);
-
-        //each of these modify the TextView on the display_run form
-        /*setVariables(message, R.id.Date);
-        setVariables(message, R.id.Weather);
-        setVariables(message, R.id.Time);
-        setVariables(message, R.id.Distance);
-        setVariables(message, R.id.Calories);
-        setVariables(message, R.id.Pace);*/
-        configureJSON();
+        configureJSON(2088942);
     }
 
 
@@ -77,11 +66,12 @@ public class DisplayRun extends ActionBarActivity {
         TextView tempView = (TextView) findViewById(x);
         tempView.setText(message);
     }
-    public void configureJSON() {
+    public void configureJSON(int activity_id) {
         DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
         //example json request
         //ADD BACK IN String url = "https://api.smashrun.com/v1/my/activities/2088942";
-        String url = "https://api.smashrun.com/v1/my/activities/2088942?";
+        String url = ("https://api.smashrun.com/v1/my/activities/"+ String.valueOf(activity_id) + "?");
+
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
         nameValuePair.add(new BasicNameValuePair("client_id", "caroline_l097faff0"));
         nameValuePair.add(new BasicNameValuePair("access_token", "AL2LRz0jUgHhih9mjrLSYhbk5LTxVOxSFbA0PeFx5sAA"));
@@ -91,9 +81,25 @@ public class DisplayRun extends ActionBarActivity {
     }
     public void setJSON(JSONObject j) {
         this.activityData = j;
-        TextView t = (TextView)findViewById(R.id.Distance);
+
+        TextView date = (TextView)findViewById(R.id.Date);
+        TextView weather = (TextView)findViewById(R.id.Weather);
+        TextView time = (TextView)findViewById(R.id.Time);
+
+        TextView distance = (TextView)findViewById(R.id.Distance);
+        TextView calories = (TextView)findViewById(R.id.Calories);
+        TextView pace = (TextView)findViewById(R.id.Pace);
         try {
-            t.setText("Distance: " + activityData.getString("distance"));
+            date.setText("Date: " + activityData.getString("startDateTimeLocal"));
+            weather.setText("Weather: " + activityData.getString("temperature") + "C");
+            //end time - start time, get rid of pauses
+            time.setText("Time: in progress");
+            distance.setText("Distance: " + activityData.getString("distance"));
+            //calculate this from something
+            calories.setText("Calories: a lot.");
+            //also calculate this
+            pace.setText("Pace: in progess");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

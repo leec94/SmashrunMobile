@@ -11,9 +11,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Created by Caroline on 3/28/2015.
@@ -21,9 +24,18 @@ import java.net.URL;
  class downloadJSON extends AsyncTask<String,String,String> {
     JSONObject json;
     DisplayRun obj;
+    FirstPage firstobj;
 
     public downloadJSON(DisplayRun obj) {
         this.obj = obj;
+        this.firstobj = null;
+
+    }
+
+    public downloadJSON(FirstPage obj) {
+        this.firstobj = obj;
+        this.obj = null;
+
     }
     @Override
     protected String doInBackground(String... url) {
@@ -51,23 +63,30 @@ import java.net.URL;
 
     @Override
     protected void onPostExecute(String result) {
-        // TODO Auto-generated method stub
         super.onPostExecute(result);
-        // update textview here
+        if (this.obj != null) {
+            //run by single run query
+            try {
 
-        try {
-
-            JSONObject returnobj = new JSONObject(result);
-            this.obj.setJSON(returnobj);
-        }catch (Exception e) {
-            e.printStackTrace();
+                JSONObject returnobj = new JSONObject(result);
+                this.obj.setJSON(returnobj);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (this.firstobj != null) {
+            try {
+                JSONArray returnobj = new JSONArray(result);
+                this.firstobj.setJSON(returnobj);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         //Log.d("Server message is ", result);
     }
 
     @Override
     protected void onPreExecute() {
-        // TODO Auto-generated method stub
         super.onPreExecute();
     }
 }
