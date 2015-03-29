@@ -20,13 +20,6 @@
         android:hint="Enter Userid"
         android:linksClickable="false" />
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Password"
-        />
-
 
     <Button
         android:layout_width="wrap_content"

@@ -28,6 +28,7 @@ import java.util.List;
 public class FirstPage extends ActionBarActivity {
 
     public EditText userIdField;
+    List<String> activityidlist;
     public boolean hasClicked = false;
     public final static  String EXTRA_MESSAGE = "com.example.caroline.smashrunmobile.MESSAGE";
 
@@ -39,8 +40,6 @@ public class FirstPage extends ActionBarActivity {
 
         userIdField = (EditText) findViewById(R.id.userid);
 
-        EditText passwordField = (EditText) findViewById(R.id.password);
-        String password = passwordField.getText().toString();
 
 
         Button latestButton = (Button) findViewById(R.id.getLatestButton);
@@ -89,16 +88,17 @@ public class FirstPage extends ActionBarActivity {
         blah.setText("Finished web request!");
 
         Spinner runspin = (Spinner) findViewById(R.id.spinnerLatest);
-        List<String> list = new ArrayList<String>();
-
+        List<String> list = new ArrayList<>();
+        activityidlist = new ArrayList<String>();
         //lol how do you json
         try {
-            //JSONArray arrayrun = j.getJSONArray(0);
             for (int i = 0; i < j.length(); i++) {
+
                 String activity_ID = j.getJSONObject(i).getString("activityId");
+                activityidlist.add(i, activity_ID);
                 String date = j.getJSONObject(i).getString("startDateTimeLocal");
                 String distance = j.getJSONObject(i).getString("distance");
-                list.add(date + " " + distance);
+                list.add(i, date + " " + distance);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -113,13 +113,27 @@ public class FirstPage extends ActionBarActivity {
 
 
     public void doSomething(){
+        if (!hasClicked || activityidlist.size() < 1) {
+            return;
+        }
+
+        Spinner s = (Spinner) findViewById(R.id.spinnerLatest);
+        int id = Integer.parseInt(activityidlist.get(s.getSelectedItemPosition()));
+
+        if (id == 0) {
+            return;
+        }
         String userid = userIdField.getText().toString();
 
         Log.d("SmashRunMobile", "User Id: " + userid);
 
+
+
         Intent intent = new Intent(this, DisplayRun.class);
 
-
+        Bundle activity = new Bundle();
+        activity.putInt("activityid", id);
+        intent.putExtras(activity);
         EditText username = (EditText) findViewById(R.id.userid);
         String message = username.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);

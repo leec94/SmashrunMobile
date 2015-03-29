@@ -21,7 +21,7 @@ import java.util.List;
 
 
 public class DisplayRun extends ActionBarActivity {
-    public JSONObject activityData;
+    private JSONObject activityData;
 
 
     @Override
@@ -29,12 +29,16 @@ public class DisplayRun extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
 
+
         TextView textView = new TextView(this);
 
         textView.setTextSize(40);
 
         setContentView(R.layout.activity_display_run);
-        configureJSON(2088942);
+
+        Bundle bundle = getIntent().getExtras();
+        int activity_id = bundle.getInt("activityid");
+        configureJSON(activity_id);
     }
 
 
@@ -98,7 +102,8 @@ public class DisplayRun extends ActionBarActivity {
             //calculate this from something
             calories.setText("Calories: a lot.");
             //also calculate this
-            pace.setText("Pace: in progess");
+            //temporarily changed to ID for testing
+            pace.setText("ID: " + activityData.getString("activityId"));
 
         } catch (JSONException e) {
             e.printStackTrace();
