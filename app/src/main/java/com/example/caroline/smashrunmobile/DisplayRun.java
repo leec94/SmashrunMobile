@@ -94,7 +94,9 @@ public class DisplayRun extends ActionBarActivity {
         TextView calories = (TextView)findViewById(R.id.Calories);
         TextView pace = (TextView)findViewById(R.id.Pace);
         try {
-            date.setText("Date: " + activityData.getString("startDateTimeLocal"));
+            String Timedate = activityData.getString("startDateTimeLocal");
+            Timedate = formatString.stringtoDateTime(Timedate);
+            date.setText("Date: " + Timedate);
             weather.setText("Weather: " + activityData.getString("temperature") + "C");
             //end time - start time, get rid of pauses
             time.setText("Time: in progress");

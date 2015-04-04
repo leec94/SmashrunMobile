@@ -97,6 +97,7 @@ public class FirstPage extends ActionBarActivity {
                 String activity_ID = j.getJSONObject(i).getString("activityId");
                 activityidlist.add(i, activity_ID);
                 String date = j.getJSONObject(i).getString("startDateTimeLocal");
+                date = formatString.stringToDate(date);
                 String distance = j.getJSONObject(i).getString("distance");
                 list.add(i, date + " " + distance);
             }
