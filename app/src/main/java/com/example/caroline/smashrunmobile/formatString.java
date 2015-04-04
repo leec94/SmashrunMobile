@@ -50,4 +50,11 @@ public class formatString {
         return DateFormat.getDateTimeInstance().format(date);
     }
 
+    public static String celsiusToFahrenheit(String s) {
+        double cel = Double.parseDouble(s);
+        double fahr = cel *(9/5) + 32;
+
+        return Double.toString(fahr);
+    }
+
 }

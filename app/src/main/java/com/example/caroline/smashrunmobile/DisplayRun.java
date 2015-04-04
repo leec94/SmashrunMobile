@@ -97,7 +97,10 @@ public class DisplayRun extends ActionBarActivity {
             String Timedate = activityData.getString("startDateTimeLocal");
             Timedate = formatString.stringtoDateTime(Timedate);
             date.setText("Date: " + Timedate);
-            weather.setText("Weather: " + activityData.getString("temperature") + "C");
+            String temp = activityData.getString("temperature");
+            temp = formatString.celsiusToFahrenheit(temp);
+            System.out.println(temp);
+            weather.setText("Weather: " + temp + "\u00b0F");
             //end time - start time, get rid of pauses
             time.setText("Time: in progress");
             distance.setText("Distance: " + activityData.getString("distance"));
