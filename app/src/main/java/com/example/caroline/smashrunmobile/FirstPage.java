@@ -99,7 +99,8 @@ public class FirstPage extends ActionBarActivity {
                 String date = j.getJSONObject(i).getString("startDateTimeLocal");
                 date = formatString.stringToDate(date);
                 String distance = j.getJSONObject(i).getString("distance");
-                list.add(i, date + " " + distance);
+                distance = formatString.kmToMiles(distance);
+                list.add(i, distance + " miles on " +  date);
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -103,7 +103,9 @@ public class DisplayRun extends ActionBarActivity {
             weather.setText("Weather: " + temp + "\u00b0F");
             //end time - start time, get rid of pauses
             time.setText("Time: in progress");
-            distance.setText("Distance: " + activityData.getString("distance"));
+            String dist = activityData.getString("distance");
+            dist = formatString.kmToMiles(dist);
+            distance.setText("Distance: " + dist + " miles");
             //calculate this from something
             calories.setText("Calories: a lot.");
             //also calculate this

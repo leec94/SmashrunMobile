@@ -54,7 +54,13 @@ public class formatString {
         double cel = Double.parseDouble(s);
         double fahr = cel *(9/5) + 32;
 
-        return Double.toString(fahr);
+        return String.format("%.3g",fahr);
+    }
+
+    public static String kmToMiles(String s) {
+        double km = Double.parseDouble(s);
+        double miles = 0.62137*km;
+        return String.format("%.3g", miles);
     }
 
 }
