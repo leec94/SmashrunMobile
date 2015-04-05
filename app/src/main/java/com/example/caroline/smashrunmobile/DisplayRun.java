@@ -7,6 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -20,6 +24,7 @@ import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -100,15 +105,16 @@ public class DisplayRun extends ActionBarActivity {
         TextView calories = (TextView) findViewById(R.id.Calories);
         TextView pace = (TextView) findViewById(R.id.Pace);
 
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+
         date.setText("Date: " + getTimeDate(activityData));
         weather.setText("Weather: " + getWeather(activityData) + " \u00b0F");
         time.setText("Duration: " + getTime(activityData) + " minutes");
         distance.setText("Distance: " + getDist(activityData) + " miles");
         //calculate this from something
         calories.setText("Calories: a lot.");
-        //also calculate this
         pace.setText("Avg Pace: " + getPace(activityData) + " miles/min");
-
+        graph.addSeries(getElevation(activityData));
 
     }
 
@@ -130,7 +136,7 @@ public class DisplayRun extends ActionBarActivity {
     }
 
     /*
-    returns the duration of the run
+    returns the temperature at time of the run
     @param data - the JSONObject containing the required data
      */
     public String getWeather(JSONObject data) {
@@ -191,4 +197,24 @@ public class DisplayRun extends ActionBarActivity {
 
     }
 
+    /*
+    Retrieves datapoints for the elevation series
+     */
+    public LineGraphSeries<DataPoint> getElevation(JSONObject data){
+        try {
+            LineGraphSeries<DataPoint> series;
+            DataPoint[] elevateData = new DataPoint[data.getJSONArray("recordingValues").getJSONArray(3).length()];
+            for (int i = 0; i < data.getJSONArray("recordingValues").getJSONArray(3).length(); i++){
+                //this should be iterating to get each elevation point
+                System.out.println(activityData.getJSONArray("recordingValues").getJSONArray(3).getInt(i));
+                elevateData[i] = (new DataPoint(i,activityData.getJSONArray("recordingValues").getJSONArray(3).getInt(i)));
+            }
+            //throw all elevations into graph
+            series = new LineGraphSeries<DataPoint>(elevateData);
+            return series;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
