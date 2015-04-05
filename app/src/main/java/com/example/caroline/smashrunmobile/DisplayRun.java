@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -113,6 +114,7 @@ public class DisplayRun extends ActionBarActivity {
         distance.setText("Distance: " + getDist(activityData) + " miles");
         //calculate this from something
         calories.setText("Calories: a lot.");
+
         pace.setText("Pace: " + formatString.minToTime(getPace(activityData)) + " min/mile\n\n\n ");
         graph.addSeries(getElevation(activityData));
         //this is ugly
@@ -121,6 +123,7 @@ public class DisplayRun extends ActionBarActivity {
         //set appropriate min and max
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setYAxisBoundsManual(true);
+
     }
 
     /*
@@ -211,8 +214,7 @@ public class DisplayRun extends ActionBarActivity {
             DataPoint[] elevateData = new DataPoint[data.getJSONArray("recordingValues").getJSONArray(3).length()];
             for (int i = 0; i < data.getJSONArray("recordingValues").getJSONArray(3).length(); i++){
                 //this should be iterating to get each elevation point
-                System.out.println(activityData.getJSONArray("recordingValues").getJSONArray(3).getInt(i));
-                elevateData[i] = (new DataPoint(i,activityData.getJSONArray("recordingValues").getJSONArray(3).getInt(i)));
+                elevateData[i] = (new DataPoint(i,data.getJSONArray("recordingValues").getJSONArray(3).getDouble(i)*3.2808));
             }
             //throw all elevations into graph
             series = new LineGraphSeries<DataPoint>(elevateData);
@@ -222,4 +224,5 @@ public class DisplayRun extends ActionBarActivity {
         }
         return null;
     }
+
 }
