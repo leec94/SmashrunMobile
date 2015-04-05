@@ -115,7 +115,12 @@ public class DisplayRun extends ActionBarActivity {
         calories.setText("Calories: a lot.");
         pace.setText("Pace: " + formatString.minToTime(getPace(activityData)) + " min/mile\n\n\n ");
         graph.addSeries(getElevation(activityData));
-
+        //this is ugly
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScrollable(true);
+        //set appropriate min and max
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setYAxisBoundsManual(true);
     }
 
     /*
