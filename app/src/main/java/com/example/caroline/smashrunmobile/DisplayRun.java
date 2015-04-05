@@ -16,12 +16,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.sql.Time;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class DisplayRun extends ActionBarActivity {
     private JSONObject activityData;
+    DecimalFormat twoDecimals = new DecimalFormat("#.##");//used to print to 2 decimals
 
 
     @Override
@@ -40,7 +45,6 @@ public class DisplayRun extends ActionBarActivity {
         int activity_id = bundle.getInt("activityid");
         configureJSON(activity_id);
     }
-
 
 
     @Override
@@ -65,16 +69,17 @@ public class DisplayRun extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setVariables(String message, int x){
+    public void setVariables(String message, int x) {
 
         TextView tempView = (TextView) findViewById(x);
         tempView.setText(message);
     }
+
     public void configureJSON(int activity_id) {
         DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
         //example json request
         //ADD BACK IN String url = "https://api.smashrun.com/v1/my/activities/2088942";
-        String url = ("https://api.smashrun.com/v1/my/activities/"+ String.valueOf(activity_id) + "?");
+        String url = ("https://api.smashrun.com/v1/my/activities/" + String.valueOf(activity_id) + "?");
 
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
         nameValuePair.add(new BasicNameValuePair("client_id", "caroline_l097faff0"));
@@ -83,38 +88,107 @@ public class DisplayRun extends ActionBarActivity {
         url += query;
         new downloadJSON(this).execute(url);
     }
+
     public void setJSON(JSONObject j) {
         this.activityData = j;
 
-        TextView date = (TextView)findViewById(R.id.Date);
-        TextView weather = (TextView)findViewById(R.id.Weather);
-        TextView time = (TextView)findViewById(R.id.Time);
+        TextView date = (TextView) findViewById(R.id.Date);
+        TextView weather = (TextView) findViewById(R.id.Weather);
+        TextView time = (TextView) findViewById(R.id.Time);
 
-        TextView distance = (TextView)findViewById(R.id.Distance);
-        TextView calories = (TextView)findViewById(R.id.Calories);
-        TextView pace = (TextView)findViewById(R.id.Pace);
+        TextView distance = (TextView) findViewById(R.id.Distance);
+        TextView calories = (TextView) findViewById(R.id.Calories);
+        TextView pace = (TextView) findViewById(R.id.Pace);
+
+        date.setText("Date: " + getTimeDate(activityData));
+        weather.setText("Weather: " + getWeather(activityData) + " \u00b0F");
+        time.setText("Duration: " + getTime(activityData) + " minutes");
+        distance.setText("Distance: " + getDist(activityData) + " miles");
+        //calculate this from something
+        calories.setText("Calories: a lot.");
+        //also calculate this
+        pace.setText("Avg Pace: " + getPace(activityData) + " miles/min");
+
+
+    }
+
+    /*
+    Retreves the date and time of the run
+    @param data - the JSON object containing the required data
+     */
+    public String getTimeDate(JSONObject data) {
         try {
-            String Timedate = activityData.getString("startDateTimeLocal");
-            Timedate = formatString.stringtoDateTime(Timedate);
-            date.setText("Date: " + Timedate);
-            String temp = activityData.getString("temperature");
-            temp = formatString.celsiusToFahrenheit(temp);
-            System.out.println(temp);
-            weather.setText("Weather: " + temp + "\u00b0F");
-            //end time - start time, get rid of pauses
-            time.setText("Time: in progress");
-            String dist = activityData.getString("distance");
-            dist = formatString.kmToMiles(dist);
-            distance.setText("Distance: " + dist + " miles");
-            //calculate this from something
-            calories.setText("Calories: a lot.");
-            //also calculate this
-            //temporarily changed to ID for testing
-            pace.setText("ID: " + activityData.getString("activityId"));
+            if (data.has("startDateTimeLocal")) {
+                String Timedate = activityData.getString("startDateTimeLocal");
+                return formatString.stringtoDateTime(Timedate);
+            } else
+                return "n/a";
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "n/a";
+    }
+
+    /*
+    returns the duration of the run
+    @param data - the JSONObject containing the required data
+     */
+    public String getWeather(JSONObject data) {
+        try {
+            if (data.has("temperature")) {
+                String temp = data.getString("temperature");
+                return formatString.celsiusToFahrenheit(temp);
+            } else return "n/a";
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return "n/a";
+    }
+
+    /*
+    Retrieves the duration of the run
+    @param data - the JSON object containing the required data
+  */
+    public double getTime(JSONObject data) {
+        try {
+            if (data.has("duration") && Double.parseDouble(data.getString("duration")) > 0.0) {
+                return Double.valueOf(twoDecimals.format(Double.parseDouble(data.getString("duration"))/60.0));
+            } else
+                return -1;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /*
+ Retreves the distance of the run
+ @param data - the JSON object containing the required data
+  */
+    public String getDist(JSONObject data){
+        try {
+            if(data.has("distance")) {
+                String dist = data.getString("distance");
+                return formatString.kmToMiles(dist);
+            }
+            else return "n/a";
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "n/a";
+    }
+    /*
+    Retrieves the average pace of the run
+    @param data - the JSON object containing the required data
+     */
+    public double getPace(JSONObject data) {
+
+        if (getTime(data) > 0 && Double.parseDouble(getDist(data)) > 0) {
+            return Double.valueOf(twoDecimals.format(getTime(data) / Double.parseDouble(getDist(data))));
+        }
+        else return -1;
+
     }
 
 }
