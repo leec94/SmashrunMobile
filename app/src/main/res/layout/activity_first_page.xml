@@ -17,14 +17,15 @@
         android:id="@+id/userid"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Userid"
-        android:linksClickable="false" />
+        android:hint="Search Username"
+        android:linksClickable="false"
+        android:editable="false" />
 
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Latest Runs"
+        android:text="Load Latest Runs"
         android:id="@+id/getLatestButton"
         android:layout_gravity="center_horizontal" />
 
@@ -43,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height= "50dp"
         android:layout_gravity="center"
-        android:text="@string/button_text"
+        android:text="View Run "
         android:onClick="goHome"
         />
 

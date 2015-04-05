@@ -69,6 +69,9 @@ public class FirstPage extends ActionBarActivity {
         } else {
             hasClicked = true;
         }
+
+
+
         //make a list of the 10 latest runs with JSON
         //form request to use API
         DefaultHttpClient httpclient = new DefaultHttpClient(new BasicHttpParams());
@@ -86,6 +89,7 @@ public class FirstPage extends ActionBarActivity {
     public void setJSON(JSONArray j) {
         TextView blah = (TextView) findViewById(R.id.textView);
         blah.setText("Finished web request!");
+
 
         Spinner runspin = (Spinner) findViewById(R.id.spinnerLatest);
         List<String> list = new ArrayList<>();
