@@ -109,17 +109,17 @@ public class DisplayRun extends ActionBarActivity {
 
         date.setText("Date: " + getTimeDate(activityData));
         weather.setText("Weather: " + getWeather(activityData) + " \u00b0F");
-        time.setText("Duration: " + getTime(activityData) + " minutes");
+        time.setText("Duration: " + formatString.minToTime(getTime(activityData)) + " minutes");
         distance.setText("Distance: " + getDist(activityData) + " miles");
         //calculate this from something
         calories.setText("Calories: a lot.");
-        pace.setText("Avg Pace: " + getPace(activityData) + " miles/min");
+        pace.setText("Pace: " + formatString.minToTime(getPace(activityData)) + " min/mile\n\n\n ");
         graph.addSeries(getElevation(activityData));
 
     }
 
     /*
-    Retreves the date and time of the run
+    Retrieves the date and time of the run
     @param data - the JSON object containing the required data
      */
     public String getTimeDate(JSONObject data) {
@@ -169,7 +169,7 @@ public class DisplayRun extends ActionBarActivity {
     }
 
     /*
- Retreves the distance of the run
+ Retrieves the distance of the run
  @param data - the JSON object containing the required data
   */
     public String getDist(JSONObject data){

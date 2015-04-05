@@ -63,4 +63,17 @@ public class formatString {
         return String.format("%.3g", miles);
     }
 
+    public static String minToTime(double minutes) {
+        int hour = (int) minutes / 60;
+        int min = ((int) minutes) - hour*60;
+        int sec = (int) ((minutes - ((int)minutes)) * 60);
+
+        if (hour != 0) {
+            return hour + ":" + min + ":" + sec;
+        } else if (min != 0) {
+            return min + ":" + sec;
+        } else {
+            return String.valueOf(sec);
+        }
+    }
 }
