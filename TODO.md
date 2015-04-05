@@ -1,5 +1,10 @@
 ## List of things to complete 
-- [ ] Thing 1
-- [ ] Make cookies
-- [x] Take a nap 
-- [ ] make thing1 work
+####Short Term
+- [ ] Fix pace from fractions of minutes/mile to mm:ss minutes/mile
+- [ ] Check data on elevation graph 
+- [ ] Add vertical scrolling to DisplayRun
+
+####Long term
+- [x] Make more graphs 
+- [ ] Make things look nicer 
+- [ ] "idk" - mike
