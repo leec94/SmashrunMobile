@@ -106,7 +106,7 @@ public class DisplayRun extends ActionBarActivity {
         TextView calories = (TextView) findViewById(R.id.Calories);
         TextView pace = (TextView) findViewById(R.id.Pace);
 
-        GraphView elevation = (GraphView) findViewById(R.id.graph);
+        GraphView graph = (GraphView) findViewById(R.id.graph);
 
         date.setText("Date: " + getTimeDate(activityData));
         weather.setText("Weather: " + getWeather(activityData) + " \u00b0F");
@@ -114,11 +114,7 @@ public class DisplayRun extends ActionBarActivity {
         distance.setText("Distance: " + getDist(activityData) + " miles");
         //calculate this from something
         calories.setText("Calories: a lot.");
-<<<<<<< HEAD
-        pace.setText("Pace: " + formatString.minToTime(getPace(activityData)) + " min/mile");
-        elevation.addSeries(getElevation(activityData));
 
-=======
         pace.setText("Pace: " + formatString.minToTime(getPace(activityData)) + " min/mile\n\n\n ");
         graph.addSeries(getElevation(activityData));
         //this is ugly
@@ -127,7 +123,7 @@ public class DisplayRun extends ActionBarActivity {
         //set appropriate min and max
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setYAxisBoundsManual(true);
->>>>>>> bc923d6c137132e8476561e92b37d2c03f92319a
+
     }
 
     /*
