@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
+    
 
 public class DisplayRun extends ActionBarActivity {
     private JSONObject activityData;
@@ -116,13 +117,20 @@ public class DisplayRun extends ActionBarActivity {
         calories.setText("Calories: a lot.");
 
         pace.setText("Pace: " + formatString.minToTime(getPace(activityData)) + " min/mile\n\n\n ");
-        graph.addSeries(getElevation(activityData));
-        //this is ugly
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScrollable(true);
-        //set appropriate min and max
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setYAxisBoundsManual(true);
+
+         //removes the graph if there is no elevation data
+        if (!(getElevation(activityData)==null)) {
+            graph.addSeries(getElevation(activityData));
+            //this is ugly
+            graph.getViewport().setScalable(true);
+            graph.getViewport().setScrollable(true);
+            //set appropriate min and max
+            graph.getViewport().setXAxisBoundsManual(true);
+            graph.getViewport().setYAxisBoundsManual(true);
+        }
+        else
+            graph.setVisibility(View.INVISIBLE);
+
 
     }
 
@@ -210,18 +218,29 @@ public class DisplayRun extends ActionBarActivity {
      */
     public LineGraphSeries<DataPoint> getElevation(JSONObject data){
         try {
-            LineGraphSeries<DataPoint> series;
-            DataPoint[] elevateData = new DataPoint[data.getJSONArray("recordingValues").getJSONArray(3).length()];
-            for (int i = 0; i < data.getJSONArray("recordingValues").getJSONArray(3).length(); i++){
-                //this should be iterating to get each elevation point
-                elevateData[i] = (new DataPoint(i,data.getJSONArray("recordingValues").getJSONArray(3).getDouble(i)*3.2808));
+            int index = -1;
+            //finds where elevation data is located
+            for(int i = 0; i< data.getJSONArray("recordingKeys").length(); i++){
+                if (data.getJSONArray("recordingKeys").get(i).equals("elevation")){
+                    index = i;
+                    break;
+                }
             }
-            //throw all elevations into graph
-            series = new LineGraphSeries<DataPoint>(elevateData);
-            return series;
+            //if it exists, get all elevation points, if not return null
+            if (index > 0) {
+                LineGraphSeries<DataPoint> series;
+                DataPoint[] elevateData = new DataPoint[data.getJSONArray("recordingValues").getJSONArray(index).length()];
+                for (int i = 0; i < data.getJSONArray("recordingValues").getJSONArray(index).length(); i++) {
+                    elevateData[i] = (new DataPoint(i, data.getJSONArray("recordingValues").getJSONArray(index).getDouble(i) * 3.2808));
+                }
+                //throw all elevations into graph
+                series = new LineGraphSeries<DataPoint>(elevateData);
+                return series;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
