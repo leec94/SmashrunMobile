@@ -6,4 +6,13 @@
     <string name="button_text">Ok</string>
     <string name="title_activity_display_run">DisplayRun</string>
 
+
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_close">Slider Menu Closed</string>
+
+    <string-array name="nav_drawer_items">
+        <item >First Page</item>
+        <item >Testing Page</item>
+    </string-array>
+
 </resources>
