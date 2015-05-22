@@ -1,49 +1,50 @@
 package com.example.caroline.smashrunmobile;
 
-import android.app.AlertDialog;
-import android.support.v7.app.ActionBarActivity;
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.content.Intent;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class FirstPage extends ActionBarActivity {
+public class FirstPage extends Fragment {
 
     public EditText userIdField;
-    List<String> activityidlist;
+    List<String> activityIdList;
     public boolean hasClicked = false;
     public final static  String EXTRA_MESSAGE = "com.example.caroline.smashrunmobile.MESSAGE";
+    View rootView;
 
+    public FirstPage() {}
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_page);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        userIdField = (EditText) findViewById(R.id.userid);
+        rootView = inflater.inflate(R.layout.activity_first_page, container, false);
 
+        userIdField = (EditText) rootView.findViewById(R.id.userid);
 
-
-        Button latestButton = (Button) findViewById(R.id.getLatestButton);
-        latestButton.setOnClickListener(new View.OnClickListener(){
+        Button latestButton = (Button) rootView.findViewById(R.id.getLatestButton);
+        latestButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -51,8 +52,8 @@ public class FirstPage extends ActionBarActivity {
             }
         });
 
-        Button confirmButton = (Button) findViewById(R.id.button);
-        confirmButton.setOnClickListener(new View.OnClickListener(){
+        Button confirmButton = (Button) rootView.findViewById(R.id.button);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -60,6 +61,7 @@ public class FirstPage extends ActionBarActivity {
             }
         });
 
+        return rootView;
 
     }
 
@@ -87,19 +89,19 @@ public class FirstPage extends ActionBarActivity {
     }
 
     public void setJSON(JSONArray j) {
-        TextView blah = (TextView) findViewById(R.id.textView);
+        TextView blah = (TextView) rootView.findViewById(R.id.textView);
         blah.setText("Finished web request!");
 
 
-        Spinner runspin = (Spinner) findViewById(R.id.spinnerLatest);
+        Spinner runSpin = (Spinner) rootView.findViewById(R.id.spinnerLatest);
         List<String> list = new ArrayList<>();
-        activityidlist = new ArrayList<String>();
+        activityIdList = new ArrayList<String>();
         //lol how do you json
         try {
             for (int i = 0; i < j.length(); i++) {
 
                 String activity_ID = j.getJSONObject(i).getString("activityId");
-                activityidlist.add(i, activity_ID);
+                activityIdList.add(i, activity_ID);
                 String date = j.getJSONObject(i).getString("startDateTimeLocal");
                 date = formatString.stringToDate(date);
                 String distance = j.getJSONObject(i).getString("distance");
@@ -109,67 +111,43 @@ public class FirstPage extends ActionBarActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        runspin.setAdapter(dataAdapter);
+        runSpin.setAdapter(dataAdapter);
 
 
     }
 
 
     public void doSomething(){
-        if (!hasClicked || activityidlist.size() < 1) {
+        if (!hasClicked || activityIdList.size() < 1) {
             return;
         }
 
-        Spinner s = (Spinner) findViewById(R.id.spinnerLatest);
-        int id = Integer.parseInt(activityidlist.get(s.getSelectedItemPosition()));
+        Spinner s = (Spinner) rootView.findViewById(R.id.spinnerLatest);
+        int id = Integer.parseInt(activityIdList.get(s.getSelectedItemPosition()));
 
         if (id == 0) {
             return;
         }
-        String userid = userIdField.getText().toString();
+        String userId = userIdField.getText().toString();
 
-        Log.d("SmashRunMobile", "User Id: " + userid);
+        Log.d("SmashRunMobile", "User Id: " + userId);
 
 
 
-        Intent intent = new Intent(this, DisplayRun.class);
+        Intent intent = new Intent(this.getActivity(), DisplayRun.class);
 
         Bundle activity = new Bundle();
         activity.putInt("activityid", id);
         intent.putExtras(activity);
-        EditText username = (EditText) findViewById(R.id.userid);
+        EditText username = (EditText) rootView.findViewById(R.id.userid);
         String message = username.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
 
         startActivity(intent);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_first_page, menu);
-        return true;
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
 }
